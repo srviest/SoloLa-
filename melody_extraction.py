@@ -24,6 +24,10 @@ Returns:
                                 of .smooth.MIDI.melody.
 
 """
+from __future__ import print_function
+from __future__ import unicode_literals
+from __future__ import division
+from past.utils import old_div
 import glob, os, sys
 import numpy as np
 from essentia.standard import *
@@ -39,7 +43,7 @@ def hertz2midi(melody_contour):
     """ 
     from numpy import inf
     melody_contour_MIDI = melody_contour.copy()
-    melody_contour_MIDI = np.log(melody_contour_MIDI/float(440))
+    melody_contour_MIDI = np.log(old_div(melody_contour_MIDI,float(440)))
     melody_contour_MIDI =12*melody_contour_MIDI/np.log(2)+69
     melody_contour_MIDI[melody_contour_MIDI==-inf]=0
 
@@ -67,8 +71,8 @@ def parse_input_files(input_files, ext='.wav'):
         ### file was given, append to list
         if basename(input_files).find(ext)!=-1:
             files.append(input_files)
-    print '  Input files: '
-    for f in files: print '    ', f
+    print('  Input files: ')
+    for f in files: print('    ', f)
     return files
 
 def extract_melody(audio_file, save_dir=None):
@@ -92,15 +96,15 @@ def extract_melody(audio_file, save_dir=None):
     return melody_contour, melody_contour_MIDI
 
 def main(audio_files, output_dir):
-    print '============================'
-    print 'Running melody extraction...'
-    print '============================'
+    print('============================')
+    print('Running melody extraction...')
+    print('============================')
     ### parse and list files to be processed
     files = parse_input_files(audio_files)
     
     ### create result directory
     if not os.path.exists(output_dir): os.makedirs(output_dir)
-    print '  Output directory: ', '\n', '    ', output_dir
+    print('  Output directory: ', '\n', '    ', output_dir)
     
     ### processing
     for f in files:
